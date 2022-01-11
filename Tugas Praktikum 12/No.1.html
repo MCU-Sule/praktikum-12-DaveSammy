@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="2072039 Dave Sammy Mulyawan">
+    <title>Soal 1</title>
+    <style>
+        fieldset {
+            display: block;
+            margin: auto;
+            width: 400px;
+            height: 100px;
+        }
+
+        input {
+            width: 300px;
+            height: 30px;
+            margin-left: 40px;
+        }
+
+        button {
+            height: 30px;
+            width: 100px;
+            margin-left: 290px;
+            border: 1px solid black;
+        }
+
+        div {
+            background-color: rgb(153, 241, 207);
+        }
+
+        h1,
+        h2,
+        h3 {
+            text-align: center;
+        }
+
+        * {
+            font-family: 'Segoe UI';
+        }
+    </style>
+    <script>
+        let parsed;
+
+        function read(callback) {
+            const request = new XMLHttpRequest();
+            request.overrideMimeType("application/json");
+            request.open("GET", "assets/cityList.json", true);
+            request.onreadystatechange = function () {
+                if (request.readyState == 4 && request.status == "200") {
+                    callback(request.responseText);
+                }
+            };
+            request.send();
+        }
+
+        read(data => {
+            parsed = JSON.parse(data);
+            for (let i = 0; i < parsed.city.length; i++) {
+                const element = document.createElement("option");
+                document.getElementById("daftarkota").appendChild(element);
+                element.innerHTML = parsed.city[i].name;
+            }
+        });
+
+        function submitQuery() {
+            let input = document.getElementById("kota").value;
+            for (let i = 0; i < parsed.city.length; i++) {
+                if (input == parsed.city[i].name) {
+                    let lat = parsed.city[i].coord.lat;
+                    let lon = parsed.city[i].coord.lon;
+                    let country = parsed.city[i].country;
+                    let id = parsed.city[i].id;
+
+                    document.getElementById("city").innerHTML = "City Name " + input + " (" + id + ")";
+                    document.getElementById("country").innerHTML = "Country " + country;
+                    document.getElementById("coordinate").innerHTML = "Coordinates (lat, lon): " + lat + ", " + lon;
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <fieldset>
+        <legend>City</legend>
+        <label for="name">Name</label>
+        <select name="daftarkota" id="daftarkota">
+            <option value="Hurzuf">Hurzuf</option>
+            <option value="Novinki">Novinki</option>
+            <option value="Gorkha">Gorkha</option>
+            <option value="State of Haryana">State of Haryana</option>
+            <option value="Holubynka">Holubynka</option>
+            <option value="Bagmati Zone">Bagmati Zone</option>
+            <option value="Mar'ina Roshcha">Mar'ina Roshcha</option>
+            <option value="Republic of india">Republic of india</option>
+            <option value="Kathmandu">Kathmandu</option>
+            <option value="Laspi">Laspi</option>
+            <option value="Merida">Merida</option>
+            <option value="Vinogradovo">Vinogradovo</option>
+            <option value="Qarah Gawl al 'Ulya">Qarah Gawl al 'Ulya</option>
+            <option value="Cherkizovo">Cherkizovo</option>
+            <option value="Alupka">Alupka</option>
+            <option value="Lichtenrade">Lichtenrade</option>
+            <option value="Zavety Il'icha">Zavety Il'icha</option>
+            <option value="'Azriqam">'Azriqam</option>
+            <option value="Ghura">Ghura</option>
+            
+        </select>
+        <br>
+        <button onclick="submitQuery()">Submit Query</button>
+    </fieldset>
+    <div>
+        <h1 id="city"></h1>
+        <h3 id="country"></h3>
+        <h3 id="coordinate"></h3>
+    </div>
+</body>
+
+</html>
